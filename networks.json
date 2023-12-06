@@ -3,6 +3,12 @@
     "Contract": {
       "address": "0xB780745fA5c01CEAc6c648833B3d03a4D6e4b035",
       "startBlock": 43244799
+    },
+    "UserProfile": {
+      "address": "0x1A63D26D33810a20fFECb2FCE3768C5348BED0aE"
+    },
+    "IPFSStorage": {
+      "address": "0x030025F4F6A63Ee914F83489d887b14dDB68B19F"
     }
   }
 }

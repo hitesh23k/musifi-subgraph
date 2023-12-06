@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: FundingFans
@@ -20,7 +20,7 @@ dataSources:
         - ReleaseFundToArtist
       abis:
         - name: FundingFans
-          file: ./abis/FundingFans.json
+          file: FundingFans/abis/FundingFans.json
       eventHandlers:
         - event: CampaignApproved(bytes32)
           handler: handleCampaignApproved
@@ -34,7 +34,7 @@ dataSources:
           handler: handleNFTMinted
         - event: ReleaseFundToArtist(address,address,uint256,bytes32,address)
           handler: handleReleaseFundToArtist
-      file: ./src/funding-fans.ts
+      file: FundingFans/FundingFans.wasm
   - kind: ethereum
     name: UserProfile
     network: mumbai
@@ -50,11 +50,11 @@ dataSources:
         - ProfileUpdated
       abis:
         - name: UserProfile
-          file: ./abis/UserProfile.json
+          file: UserProfile/abis/UserProfile.json
       eventHandlers:
         - event: ProfileUpdated(indexed address,string,string)
           handler: handleProfileUpdated
-      file: ./src/user-profile.ts
+      file: UserProfile/UserProfile.wasm
   - kind: ethereum
     name: IPFSStorage
     network: mumbai
@@ -71,10 +71,10 @@ dataSources:
         - MusicReleasedWithoutCampaign
       abis:
         - name: IPFSStorage
-          file: ./abis/IPFSStorage.json
+          file: IPFSStorage/abis/IPFSStorage.json
       eventHandlers:
         - event: MusicReleasedForCampaign(indexed address,string,string)
           handler: handleMusicReleasedForCampaign
         - event: MusicReleasedWithoutCampaign(indexed address,string,string)
           handler: handleMusicReleasedWithoutCampaign
-      file: ./src/ipfs-storage.ts
+      file: IPFSStorage/IPFSStorage.wasm

@@ -1,3 +1,4 @@
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
   CampaignApproved as CampaignApprovedEvent,
   CampaignBlocked as CampaignBlockedEvent,
@@ -7,29 +8,29 @@ import {
   ReleaseFundToArtist as ReleaseFundToArtistEvent
 } from "../generated/Contract/Contract"
 import {
-  CampaignApproved,
-  CampaignBlocked,
-  CampaignCreated,
+  Campaign,
   DonationReceived,
   NFTMinted,
   ReleaseFundToArtist
 } from "../generated/schema"
 
 export function handleCampaignApproved(event: CampaignApprovedEvent): void {
-  let entity = new CampaignApproved(
+  let entity = new Campaign(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  entity.campaignHash = event.params.campaignHash
+  entity.campaignHash = event.params.campaignHash;
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
+  entity.event = "Approved"
+  entity.status = 0 // Approved
+  entity.startTimestamp = event.block.timestamp;
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  entity.save();
 }
 
 export function handleCampaignBlocked(event: CampaignBlockedEvent): void {
-  let entity = new CampaignBlocked(
+  let entity = new Campaign(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
   entity.campaignHash = event.params.campaignHash
@@ -38,12 +39,14 @@ export function handleCampaignBlocked(event: CampaignBlockedEvent): void {
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
+  entity.event = "Blocked"
+  entity.status = 2 // Blocked
 
   entity.save()
 }
 
 export function handleCampaignCreated(event: CampaignCreatedEvent): void {
-  let entity = new CampaignCreated(
+  let entity = new Campaign(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
   entity.campaignHash = event.params.campaignHash
@@ -62,6 +65,8 @@ export function handleCampaignCreated(event: CampaignCreatedEvent): void {
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
+  entity.event = "Created"
+  entity.status = 1 // Pending
 
   entity.save()
 }
@@ -80,6 +85,21 @@ export function handleDonationReceived(event: DonationReceivedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+
+  // Calculate total donation amount for the campaign
+  let campaignHash = event.params.campaignHash;
+  if (!campaignHash) {
+    return;
+  }
+
+  let campaign = Campaign.load(event.params.campaignHash) as Campaign | null;
+  if (!campaign) {
+    return;
+  }
+
+  campaign.totalDonationAmount = campaign.totalDonationAmount!.plus(event.params.targetAmount);
+
+  campaign.save();
 }
 
 export function handleNFTMinted(event: NFTMintedEvent): void {

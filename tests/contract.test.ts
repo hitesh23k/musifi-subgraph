@@ -7,9 +7,8 @@ import {
   afterAll
 } from "matchstick-as/assembly/index"
 import { Bytes, Address, BigInt } from "@graphprotocol/graph-ts"
-import { CampaignApproved } from "../generated/schema"
 import { CampaignApproved as CampaignApprovedEvent } from "../generated/Contract/Contract"
-import { handleCampaignApproved } from "../src/contract"
+import { handleCampaignApproved } from "../src/funding-fans"
 import { createCampaignApprovedEvent } from "./contract-utils"
 
 // Tests structure (matchstick-as >=0.5.0)

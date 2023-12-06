@@ -1,0 +1,39 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: mumbai
+    source:
+      address: "0xB780745fA5c01CEAc6c648833B3d03a4D6e4b035"
+      abi: Contract
+      startBlock: 43244799
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CampaignApproved
+        - CampaignBlocked
+        - CampaignCreated
+        - DonationReceived
+        - NFTMinted
+        - ReleaseFundToArtist
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: CampaignApproved(bytes32)
+          handler: handleCampaignApproved
+        - event: CampaignBlocked(bytes32,string)
+          handler: handleCampaignBlocked
+        - event: CampaignCreated(bytes32,address,string,string,string,string,string,string,string,string,uint256,uint256)
+          handler: handleCampaignCreated
+        - event: DonationReceived(address,bytes32,bytes32,uint256)
+          handler: handleDonationReceived
+        - event: NFTMinted(indexed address,address,indexed bytes32,uint256,indexed uint256)
+          handler: handleNFTMinted
+        - event: ReleaseFundToArtist(address,address,uint256,bytes32,address)
+          handler: handleReleaseFundToArtist
+      file: ./src/contract.ts

@@ -1,0 +1,70 @@
+type CampaignApproved @entity(immutable: true) {
+  id: Bytes!
+  campaignHash: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CampaignBlocked @entity(immutable: true) {
+  id: Bytes!
+  campaignHash: Bytes! # bytes32
+  blockReason: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CampaignCreated @entity(immutable: true) {
+  id: Bytes!
+  campaignHash: Bytes! # bytes32
+  artist: Bytes! # address
+  title: String! # string
+  description: String! # string
+  goalTitle: String! # string
+  goals: String! # string
+  instagramHandle: String! # string
+  spotifyHandle: String! # string
+  yourStory: String! # string
+  NFTPicture: String! # string
+  targetAmount: BigInt! # uint256
+  runningDurationInDays: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DonationReceived @entity(immutable: true) {
+  id: Bytes!
+  donor: Bytes! # address
+  donationHash: Bytes! # bytes32
+  campaignHash: Bytes! # bytes32
+  targetAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NFTMinted @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  NFTAddress: Bytes! # address
+  campaignId: Bytes! # bytes32
+  tokenId: BigInt! # uint256
+  edition: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ReleaseFundToArtist @entity(immutable: true) {
+  id: Bytes!
+  token: Bytes! # address
+  releasedBy: Bytes! # address
+  amountReleased: BigInt! # uint256
+  campaignID: Bytes! # bytes32
+  artistWallet: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
